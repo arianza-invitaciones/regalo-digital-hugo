@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Hugo ❤️ | Nuestra Segunda Oportunidad</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        roseGold: {
+                            50: '#fdf2f2',
+                            100: '#fbe8e8',
+                            200: '#f6d5d5',
+                            300: '#efb8b8',
+                            400: '#e38d8d',
+                            500: '#d16262',
+                            600: '#b84545',
+                            700: '#9b3737',
+                            800: '#803131',
+                            900: '#6a2c2c',
+                            950: '#391414',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0c0a09;
+            color: #f5f5f4;
+            overflow-x: hidden;
+        }
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            50% { opacity: 0.9; }
+            100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+        }
+        .floating-heart {
+            position: absolute;
+            bottom: -30px;
+            color: rgba(209, 98, 98, 0.4);
+            animation: float 7s infinite linear;
+            z-index: 1;
+        }
+        .glass-card {
+            background: rgba(28, 25, 23, 0.85);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(219, 154, 154, 0.25);
+        }
+        .glass-modal {
+            background: rgba(12, 10, 9, 0.96);
+            backdrop-filter: blur(25px);
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0c0a09; }
+        ::-webkit-scrollbar-thumb { background: #b84545; border-radius: 4px; }
+        .story-step {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .story-step.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .gift-box-container {
+            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .gift-box-container.opened {
+            transform: scale(1.5) translateY(-100px) rotate(10deg);
+            opacity: 0;
+            pointer-events: none;
+            display: none;
+        }
+        .main-content {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1.2s ease 0.4s;
+            pointer-events: none;
+            display: none;
+        }
+        .main-content.visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+            display: block;
+        }
+        @keyframes pulse-gold {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 25px rgba(209,98,98,0.3); }
+            50% { transform: scale(1.03); box-shadow: 0 0 45px rgba(209,98,98,0.5); }
+        }
+        .pulse-box {
+            animation: pulse-gold 3s infinite ease-in-out;
+        }
+        .polaroid {
+            background: #fdfbf7;
+            padding: 12px 12px 35px 12px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            transition: all 0.4s ease;
+        }
+        .polaroid img { width: 100%; height: 220px; object-fit: cover; }
+        .polaroid:nth-child(odd) { transform: rotate(-2deg); }
+        .polaroid:nth-child(even) { transform: rotate(2deg); }
+        .polaroid:hover {
+            transform: scale(1.06) rotate(0deg) !important;
+            z-index: 20;
+            box-shadow: 0 25px 50px rgba(209,98,98,0.4);
+        }
+        .cinematic-frame {
+            border: 4px solid #b84545;
+            box-shadow: 0 0 30px rgba(184, 69, 69, 0.4);
+            position: relative;
+        }
+        .cinematic-frame::before, .cinematic-frame::after {
+            content: "🎬 🎞️ 🎬 🎞️ 🎬 🎞️";
+            position: absolute;
+            left: 0; right: 0;
+            text-align: center;
+            font-size: 12px;
+            color: #efb8b8;
+            background: rgba(0,0,0,0.7);
+        }
+        .cinematic-frame::before { top: -20px; }
+        .cinematic-frame::after { bottom: -20px; }
+
+        .scratch-box {
+            position: relative;
+            background: linear-gradient(135deg, #1c1917, #0c0a09);
+            border-radius: 1rem;
+            overflow: hidden;
+            border: 2px solid rgba(219, 154, 154, 0.3);
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 1.5rem;
+        }
+        .scratch-cover {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, #b84545, #5a2323);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: opacity 0.6s ease;
+            z-index: 10;
+        }
+        .scratch-cover.scratched {
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="relative min-h-screen selection:bg-roseGold-500 selection:text-white flex flex-col items-center justify-center p-4 sm:p-6 overflow-x-hidden">
+
+    <div id="hearts-container" class="fixed inset-0 pointer-events-none overflow-hidden z-0"></div>
+
+    <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[900px] h-[600px] bg-roseGold-600/15 rounded-full blur-[160px] pointer-events-none z-0"></div>
+
+    <!-- 1. CAJA DE REGALO CON CONTORNOS ELEGANTES -->
+    <div id="gift-screen" class="gift-box-container relative z-20 text-center max-w-md w-full mx-auto my-auto py-12">
+        <div class="glass-card rounded-3xl p-8 sm:p-10 shadow-2xl border border-roseGold-500/30 pulse-box relative overflow-hidden">
+            <div class="absolute -right-16 -top-16 w-40 h-40 bg-roseGold-500/20 rounded-full blur-3xl"></div>
+            
+            <div class="w-28 h-28 mx-auto border-2 border-roseGold-400/60 rounded-3xl flex items-center justify-center mb-6 relative cursor-pointer group hover:scale-105 transition-transform duration-500 bg-roseGold-500/5 backdrop-blur-sm shadow-inner" onclick="openGift()">
+                <div class="absolute -top-3 w-10 h-5 border-t-2 border-x-2 border-roseGold-300 rounded-t-full"></div>
+                <div class="absolute -top-3 right-1/2 translate-x-1/2 w-8 h-5 border-t-2 border-x-2 border-roseGold-300 rounded-t-full"></div>
+                <i class="fa-solid fa-gift text-5xl text-roseGold-300 group-hover:rotate-12 transition-transform duration-300"></i>
+            </div>
+
+            <h1 class="font-serif text-2xl sm:text-3xl font-bold text-white mb-6 tracking-wide">Hugo, Paola tiene un regalo para ti...</h1>
+
+            <button onclick="openGift()" class="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-roseGold-600 to-roseGold-700 hover:from-roseGold-500 hover:to-roseGold-600 text-white font-bold tracking-wider uppercase text-sm shadow-2xl transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2 border border-roseGold-400/40">
+                <i class="fa-solid fa-box-open text-lg"></i> Abrir mi regalo
+            </button>
+        </div>
+    </div>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <div id="main-content" class="main-content relative z-10 max-w-3xl w-full mx-auto py-8 space-y-12">
+
+        <div class="fixed bottom-6 right-6 z-50">
+            <button id="music-btn" onclick="toggleMusic()" class="flex items-center gap-2 px-4 py-3 rounded-full glass-card hover:bg-roseGold-900/40 text-roseGold-300 shadow-2xl transition-all duration-300 border border-roseGold-500/30 group">
+                <i id="music-icon" class="fa-solid fa-music text-lg animate-pulse"></i>
+                <span id="music-text" class="text-xs font-medium tracking-wider uppercase">Música Romántica</span>
+            </button>
+            <audio id="bg-music" loop>
+                <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf756.mp3?filename=romantic-guitars-112140.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+
+        <!-- HEADER CON HUGO EN LETRAS GRANDES -->
+        <header class="text-center space-y-4 story-step">
+            <h1 class="font-serif text-5xl sm:text-7xl font-bold text-white tracking-tight leading-tight">
+                Hugo <span class="text-roseGold-400">❤️</span>
+            </h1>
+            <p class="font-serif italic text-lg sm:text-xl text-stone-300">
+                "Algunas historias merecen una segunda oportunidad."
+            </p>
+        </header>
+
+        <!-- CONTADOR DE TIEMPO EN VIVO -->
+        <section class="glass-card rounded-3xl p-6 text-center shadow-xl story-step border border-roseGold-500/20">
+            <h3 class="font-serif text-roseGold-300 text-sm tracking-wider uppercase font-semibold mb-4">Nuestro Tiempo Juntos (Segunda Vuelta)</h3>
+            <div id="countdown" class="grid grid-cols-4 gap-2 text-white">
+                <div class="bg-stone-900/80 p-3 rounded-2xl border border-roseGold-500/20">
+                    <span id="days" class="text-2xl sm:text-3xl font-bold text-roseGold-400 block">0</span>
+                    <span class="text-[10px] sm:text-xs uppercase tracking-widest text-stone-400">Días</span>
+                </div>
+                <div class="bg-stone-900/80 p-3 rounded-2xl border border-roseGold-500/20">
+                    <span id="hours" class="text-2xl sm:text-3xl font-bold text-roseGold-400 block">0</span>
+                    <span class="text-[10px] sm:text-xs uppercase tracking-widest text-stone-400">Horas</span>
+                </div>
+                <div class="bg-stone-900/80 p-3 rounded-2xl border border-roseGold-500/20">
+                    <span id="minutes" class="text-2xl sm:text-3xl font-bold text-roseGold-400 block">0</span>
+                    <span class="text-[10px] sm:text-xs uppercase tracking-widest text-stone-400">Minutos</span>
+                </div>
+                <div class="bg-stone-900/80 p-3 rounded-2xl border border-roseGold-500/20">
+                    <span id="seconds" class="text-2xl sm:text-3xl font-bold text-roseGold-400 block">0</span>
+                    <span class="text-[10px] sm:text-xs uppercase tracking-widest text-stone-400">Segundos</span>
+                </div>
+            </div>
+            <p class="text-stone-400 text-xs mt-3 italic">Desde el 11 de octubre de 2025</p>
+        </section>
+
+        <!-- BLOQUE 1 -->
+        <section class="glass-card rounded-3xl p-6 sm:p-8 shadow-xl story-step space-y-6">
+            <p class="font-serif italic text-roseGold-200 text-lg">
+                Mi lugar favorito no es un destino. Es donde sea que la vida me permita coincidir contigo.
+            </p>
+            <p class="text-stone-200 text-base sm:text-lg leading-relaxed">
+                <strong class="text-white font-semibold">Hugo:</strong><br>
+                Si alguien me hubiera dicho aquella primera vez que nuestros caminos se cruzaron, en medio de una pandemia, que después de tantos meses, de una pausa y de más de un año separados, volveríamos a encontrarnos para escribir una historia todavía más bonita… no sé si lo habría creído.
+            </p>
+            
+            <div class="space-y-2">
+                <p class="text-xs text-roseGold-300 font-bold uppercase tracking-wider">🎫 Rasca la tarjeta para revelar el lugar de nuestra primera cita:</p>
+                <div class="scratch-box">
+                    <div class="text-roseGold-200 font-serif text-base font-semibold z-0">
+                        📍 ¡Fue en Patio Toluca!<br>
+                        <a href="https://maps.google.com/?q=Patio+Toluca" target="_blank" class="inline-block mt-2 text-xs px-3 py-1.5 rounded-lg bg-roseGold-600 hover:bg-roseGold-500 text-white uppercase tracking-wider">Ver ubicación en Maps</a>
+                    </div>
+                    <div class="scratch-cover" onclick="this.classList.add('scratched')">
+                        <i class="fa-solid fa-hand-pointer text-2xl text-white mb-1 animate-bounce"></i>
+                        <span class="text-xs uppercase tracking-widest font-bold text-white">Toca para raspar y descubrir</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BLOQUE 2 -->
+        <section class="glass-card rounded-3xl p-6 sm:p-8 shadow-xl story-step space-y-6">
+            <div class="flex justify-center my-4">
+                <div class="polaroid max-w-[300px] cursor-pointer" onclick="openLightbox('439029.jpg', 'Nuestra conexión inquebrantable')">
+                    <img src="439029.jpg" alt="Momento especial">
+                    <p class="font-serif text-stone-800 text-center text-xs mt-3 italic font-semibold">Nuestra segunda vuelta ❤️</p>
+                </div>
+            </div>
+            <p class="text-stone-200 text-base sm:text-lg leading-relaxed">
+                Lo que sí sé es que la vida tenía guardada una segunda oportunidad para nosotros. Y qué bonito que, esta vez, hayamos sabido encontrarnos de una manera diferente. Nuestra historia comenzó hace tiempo. Tuvimos una primera etapa de casi seis meses, después llegó una pausa de un año y dos meses en la que cada quien siguió su camino. Pero aquí estamos, viviendo esta segunda vuelta, sumando un año y un mes juntos, y con el corazón tan feliz de haber vuelto a coincidir.
+            </p>
+            
+            <div class="space-y-2">
+                <p class="text-xs text-roseGold-300 font-bold uppercase tracking-wider">🎫 Rasca la tarjeta para revelar nuestro secreto:</p>
+                <div class="scratch-box">
+                    <div class="text-roseGold-200 font-serif text-base font-semibold z-0">
+                        ✨ "Hoy podemos elegirnos con más ganas, disfrutar lo que tenemos y soñar con todo lo que falta."
+                    </div>
+                    <div class="scratch-cover" onclick="this.classList.add('scratched')">
+                        <i class="fa-solid fa-hand-pointer text-2xl text-white mb-1 animate-bounce"></i>
+                        <span class="text-xs uppercase tracking-widest font-bold text-white">Toca para raspar y descubrir</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BLOQUE 3 -->
+        <section class="glass-card rounded-3xl p-6 sm:p-8 shadow-xl story-step space-y-6">
+            <div class="flex justify-center my-4">
+                <div class="polaroid max-w-[300px] cursor-pointer" onclick="openLightbox('439028.jpg', 'Brindis por nosotros')">
+                    <img src="439028.jpg" alt="Brindis">
+                    <p class="font-serif text-stone-800 text-center text-xs mt-3 italic font-semibold">Brindis por nuestros momentos 🍻</p>
+                </div>
+            </div>
+            <p class="text-stone-200 text-base sm:text-lg leading-relaxed">
+                Porque contigo entendí que el amor no siempre necesita grandes escenarios para sentirse extraordinario. A veces el amor sabe a unos taquitos de tripa, suadero o pastor en la esquina. Otras veces tiene una mesa bonita en algún restaurante que descubrimos por casualidad. A veces suena a una canción que terminamos cantando juntos, a una pista de baile, a una película en casa o a esas carcajadas que nos hacen olvidar el resto del mundo.
+            </p>
+            <p class="text-stone-200 text-base sm:text-lg leading-relaxed">
+                Y, por supuesto, a una cervecita bien fría. Porque si algo sabemos hacer tú y yo, es disfrutar la vida a nuestra manera. JAJAJA. Me encanta que contigo no necesito que cada plan sea perfecto. Me basta con que estemos juntos, porque contigo hasta lo más sencillo se convierte en uno de mis recuerdos favoritos.
+            </p>
+        </section>
+
+        <!-- BLOQUE 4 -->
+        <section class="glass-card rounded-3xl p-6 sm:p-8 shadow-xl story-step space-y-6">
+            <h3 class="font-serif text-roseGold-300 text-lg font-bold text-center mb-4">🎞️ Nuestros Momentos de Cine</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 my-4">
+                <div class="cinematic-frame rounded-2xl overflow-hidden cursor-pointer bg-black" onclick="openLightbox('439030.jpg', 'Compartiendo en familia')">
+                    <img src="439030.jpg" alt="Cena familia" class="w-full h-56 object-cover hover:scale-105 transition duration-500">
+                </div>
+                <div class="cinematic-frame rounded-2xl overflow-hidden cursor-pointer bg-black" onclick="openLightbox('439031.jpg', 'Cenas y risas')">
+                    <img src="439031.jpg" alt="Restaurante" class="w-full h-56 object-cover hover:scale-105 transition duration-500">
+                </div>
+            </div>
+            <p class="text-stone-200 text-base sm:text-lg leading-relaxed">
+                Y si hay algo que me hace especialmente feliz, es ver cómo poco a poco te has convertido en parte de mi mundo. Verte convivir con mis papás, llevarte tan bien con mi hermana y compartir esos momentos en los que todos estamos juntos me recuerda que el amor también se construye en esos pequeños espacios donde la vida se siente bonita, familiar y llena de alegría.
+            </p>
+
+            <div class="space-y-2">
+                <p class="text-xs text-roseGold-300 font-bold uppercase tracking-wider">🎫 Rasca la tarjeta para revelar un mensaje sobre nuestra familia:</p>
+                <div class="scratch-box">
+                    <div class="text-roseGold-200 font-serif text-base font-semibold z-0">
+                        🥰 "El amor también se construye en esos pequeños espacios donde la vida se siente familiar y llena de alegría."
+                    </div>
+                    <div class="scratch-cover" onclick="this.classList.add('scratched')">
+                        <i class="fa-solid fa-hand-pointer text-2xl text-white mb-1 animate-bounce"></i>
+                        <span class="text-xs uppercase tracking-widest font-bold text-white">Toca para raspar y descubrir</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BLOQUE 5 -->
+        <section class="glass-card rounded-3xl p-6 sm:p-8 shadow-xl story-step space-y-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 my-4">
+                <div class="polaroid cursor-pointer" onclick="openLightbox('439036.jpg', 'Malinalco - Pueblo Mágico')">
+                    <img src="439036.jpg" alt="Malinalco">
+                    <p class="font-serif text-stone-800 text-center text-xs mt-3 italic font-semibold">Malinalco 🌿</p>
+                </div>
+                <div class="polaroid cursor-pointer" onclick="openLightbox('439038.jpg', 'Valle de Bravo - Aventura')">
+                    <img src="439038.jpg" alt="Valle de Bravo">
+                    <p class="font-serif text-stone-800 text-center text-xs mt-3 italic font-semibold">Valle de Bravo ☀️</p>
+                </div>
+            </div>
+            <p class="text-stone-200 text-base sm:text-lg leading-relaxed">
+                Y entonces están nuestros lugares… <strong class="text-white font-semibold">Valle de Bravo y Malinalco</strong>, que guardan un pedacito de nosotros entre sus calles, sus paisajes, sus caminatas y esos restaurancitos que descubrimos mientras disfrutamos estar juntos.
+            </p>
+            <p class="text-stone-200 text-base sm:text-lg leading-relaxed">
+                Y claro, hay tradiciones que simplemente no se negocian: <strong class="text-white font-semibold">nuestra pancita del 16</strong>. Porque hay cosas que se vuelven tan nuestras que ya no imaginamos la vida sin ellas.
+            </p>
+        </section>
+
+        <!-- BLOQUE 6 -->
+        <section class="glass-card rounded-3xl p-6 sm:p-8 shadow-xl story-step space-y-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 my-4">
+                <div class="polaroid cursor-pointer" onclick="openLightbox('439035.jpg', 'En el coche juntos')">
+                    <img src="439035.jpg" alt="Coche">
+                    <p class="font-serif text-stone-800 text-center text-xs mt-3 italic font-semibold">Rumbo a nuevos destinos 🚗</p>
+                </div>
+                <div class="polaroid cursor-pointer" onclick="openLightbox('439037.jpg', 'Nuestra complicidad')">
+                    <img src="439037.jpg" alt="Complicidad">
+                    <p class="font-serif text-stone-800 text-center text-xs mt-3 italic font-semibold">Sonrisas y complicidad ✨</p>
+                </div>
+            </div>
+            <p class="text-stone-200 text-base sm:text-lg leading-relaxed">
+                Contigo puedo bailar, cantar, comer, reír, quedarme en casa sin hacer absolutamente nada o salir a descubrir el mundo. Puedo disfrutar de lo espontáneo y también ilusionarme con lo que viene. Y eso es algo que valoro muchísimo: sentir que podemos ser nosotros mismos, acoplarnos, divertirnos y encontrar felicidad tanto en una aventura como en un domingo cualquiera.
+            </p>
+        </section>
+
+        <!-- BLOQUE 7 -->
+        <section class="glass-card rounded-3xl p-6 sm:p-8 shadow-xl story-step space-y-6">
+            <div class="flex justify-center my-4">
+                <div class="polaroid max-w-[300px] cursor-pointer" onclick="openLightbox('439040.jpg', 'Celebrando juntos')">
+                    <img src="439040.jpg" alt="Celebración">
+                    <p class="font-serif text-stone-800 text-center text-xs mt-3 italic font-semibold">Por nuestro futuro 🥂</p>
+                </div>
+            </div>
+            <p class="text-stone-200 text-base sm:text-lg leading-relaxed">
+                No sé exactamente qué nos tiene preparado la vida, pero sí sé algo: me ilusiona imaginar todo lo que todavía podemos vivir juntos. Quiero más viajes contigo, más lugares por descubrir, más canciones que cantar, más bailes, más películas, más comidas deliciosas, más cervecitas, más pancitas del 16 y muchísimas más razones para reírnos hasta que nos duela la panza.
+            </p>
+
+            <div class="space-y-2">
+                <p class="text-xs text-roseGold-300 font-bold uppercase tracking-wider">🎫 Rasca la tarjeta para revelar mi promesa final:</p>
+                <div class="scratch-box">
+                    <div class="text-roseGold-200 font-serif text-base font-semibold z-0">
+                        💖 "Hay personas con las que compartes momentos... y hay personas con las que quieres compartir la vida. Tú eres esa persona para mí."
+                    </div>
+                    <div class="scratch-cover" onclick="this.classList.add('scratched')">
+                        <i class="fa-solid fa-hand-pointer text-2xl text-white mb-1 animate-bounce"></i>
+                        <span class="text-xs uppercase tracking-widest font-bold text-white">Toca para raspar y descubrir</span>
+                    </div>
+                </div>
+            </div>
+
+            <p class="font-serif italic text-roseGold-300 text-lg font-medium pt-4">
+                Gracias por ser tú. Por ser mi compañero de aventuras, de risas, de antojos y de sueños. Te amo y te adoro, Hugo.<br>
+                Por nosotros, por lo que somos y por todo lo que todavía nos falta vivir.
+            </p>
+            <div class="pt-4 border-t border-roseGold-500/20 flex flex-col sm:flex-row justify-between items-center text-sm">
+                <span class="text-stone-400 italic">Con todo mi amor,</span>
+                <span class="font-serif text-lg text-roseGold-400 font-bold mt-1 sm:mt-0">La persona que sigue eligiendo escribir esta historia contigo. ❤️</span>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="text-center pt-8 pb-12 border-t border-stone-800 text-stone-500 text-xs space-y-2">
+            <p>Creado con todo el amor y detalle por Paola para Hugo ❤️</p>
+        </footer>
+
+    </main>
+
+    <!-- LIGHTBOX MODAL -->
+    <div id="lightbox" class="fixed inset-0 z-50 glass-modal hidden flex items-center justify-center p-4">
+        <button onclick="closeLightbox()" class="absolute top-6 right-6 text-white text-3xl w-12 h-12 rounded-full bg-stone-800/80 hover:bg-roseGold-700 flex items-center justify-center transition">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div class="max-w-3xl w-full text-center space-y-4">
+            <img id="lightbox-img" src="" alt="Ampliada" class="max-h-[75vh] mx-auto rounded-2xl shadow-2xl border border-roseGold-500/20 object-contain">
+            <p id="lightbox-caption" class="font-serif text-lg text-roseGold-300 italic"></p>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // Corazones Flotantes
+        function createHeart() {
+            const container = document.getElementById('hearts-container');
+            if (!container) return;
+            const heart = document.createElement('div');
+            heart.classList.add('floating-heart');
+            heart.innerHTML = '<i class="fa-solid fa-heart"></i>';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            heart.style.animationDuration = (Math.random() * 6 + 4) + 's';
+            container.appendChild(heart);
+            setTimeout(() => { heart.remove(); }, 8000);
+        }
+        setInterval(createHeart, 500);
+
+        // Contador de Tiempo desde el 11 de octubre de 2025
+        const startDate = new Date('2025-10-11T00:00:00');
+        function updateCountdown() {
+            const now = new Date();
+            const diff = now - startDate;
+            if (diff > 0) {
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+                const minutes = Math.floor((diff / 1000 / 60) % 60);
+                const seconds = Math.floor((diff / 1000) % 60);
+
+                document.getElementById('days').innerText = days;
+                document.getElementById('hours').innerText = hours;
+                document.getElementById('minutes').innerText = minutes;
+                document.getElementById('seconds').innerText = seconds;
+            }
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Scroll Animation Observer for Story Steps
+        const observerOptions = { threshold: 0.15 };
+        const observer = new IntersectionObserver((entries, observerInstance) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observerInstance.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        function initObserver() {
+            document.querySelectorAll('.story-step').forEach(step => {
+                observer.observe(step);
+            });
+        }
+
+        // Open Gift Function
+        function openGift() {
+            const giftScreen = document.getElementById('gift-screen');
+            const mainContent = document.getElementById('main-content');
+            
+            giftScreen.classList.add('opened');
+            mainContent.classList.add('visible');
+            document.body.classList.remove('flex', 'items-center', 'justify-center', 'p-4');
+
+            initObserver();
+
+            for(let i=0; i<30; i++) {
+                setTimeout(createHeart, i * 50);
+            }
+
+            const audio = document.getElementById('bg-music');
+            audio.play().then(() => {
+                isPlaying = true;
+                document.getElementById('music-icon').className = "fa-solid fa-compact-disc text-lg animate-spin text-roseGold-400";
+                document.getElementById('music-text').innerText = "Reproduciendo";
+                document.getElementById('music-btn').classList.add('bg-roseGold-800');
+            }).catch(e => {
+                console.log("Audio play needs user interaction");
+            });
+        }
+
+        // Music Toggle Function
+        let isPlaying = false;
+        const audio = document.getElementById('bg-music');
+        const musicBtn = document.getElementById('music-btn');
+        const musicIcon = document.getElementById('music-icon');
+        const musicText = document.getElementById('music-text');
+
+        function toggleMusic() {
+            if (isPlaying) {
+                audio.pause();
+                isPlaying = false;
+                musicIcon.className = "fa-solid fa-music text-lg";
+                musicText.innerText = "Música Romántica";
+                musicBtn.classList.remove('bg-roseGold-800');
+            } else {
+                audio.play().then(() => {
+                    isPlaying = true;
+                    musicIcon.className = "fa-solid fa-compact-disc text-lg animate-spin text-roseGold-400";
+                    musicText.innerText = "Reproduciendo";
+                    musicBtn.classList.add('bg-roseGold-800');
+                }).catch(e => {
+                    console.log("Audio play blocked", e);
+                });
+            }
+        }
+
+        // Lightbox Functions
+        function openLightbox(src, caption) {
+            const lightbox = document.getElementById('lightbox');
+            const img = document.getElementById('lightbox-img');
+            const cap = document.getElementById('lightbox-caption');
+            img.src = src;
+            cap.innerText = caption;
+            lightbox.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLightbox();
+        });
+    </script>
+</body>
+</html>
